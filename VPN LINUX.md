@@ -1,10 +1,10 @@
-# Instalacion y configuracion de VPN en linux 
+# Instalación y configuración de VPN en linux 
 
-Para configuara un VPN en linux se debe seguir los siguientes pasos:
+Para configuarar un VPN en linux se debe seguir los siguientes pasos:
 
 - Paso 1
 
-    En nuestra maquina Ubunto darle una direccion estatica en nuestro caso sera la siguiente
+    En nuestra maquina Ubunto darle una dirección ip estatica en nuestro caso sera la siguiente
 
         Ip 10.0.0.16
         Mascara 255.255.255.0
@@ -13,9 +13,9 @@ Para configuara un VPN en linux se debe seguir los siguientes pasos:
 
 - Paso 2
 
-    Instalamos el programa que nos permitira hacer nuestro SO Ubuntu un servidor VPN.
+    Instalamos el programa que nos permitirá hacer nuestro SO Ubuntu un servidor VPN.
 
-        apt-get install pptpd
+        apt-get install pptp
 
 - Paso 3
 
@@ -23,8 +23,7 @@ Para configuara un VPN en linux se debe seguir los siguientes pasos:
 
         nano /etc/pptpd.conf
 
-        localip 10.0.0.16
-        remoteip 10.0.0.17-30,10.0.0.245
+        localip 10.10.10.1
     
     Guardamos la configuración
 
@@ -34,22 +33,22 @@ Para configuara un VPN en linux se debe seguir los siguientes pasos:
 
         nano /etc/pp/pptpd-options
     
-    Por defecto viene name pptpd
+    Por defecto viene como name pptpd (Opcionala)
 
         name prueba
     
-    Luego verificamos que los siguiente require esten descomentados
+    Luego verificamos que los siguientes **require** se encuentren des comentados
 
         require-mschap-v2
 
         require-mppe-128
     
-    Despues nos ubicamos en el apartado de Network and Routing y descomentamos los ms-dns para ubicar los dns de Google
+    Después nos ubicamos en el apartado de **Network and Routing** y des comentamos los ms-dns para ubicar los dns de Google
 
         ms-dns 8.8.8.8
         ms-dns 8.8.4.4
 
-    Para que los cliente cuando se conecte tengan ese DNS por defecto.
+    Para que los clientes cuando se conecte tengan ese DNS por defecto.
     
     Guardamos los cambios
 
@@ -59,26 +58,26 @@ Para configuara un VPN en linux se debe seguir los siguientes pasos:
 
         nano /etc/ppp/chap-secrets
 
-    Una vez dentro creameros el usuario
+    Una vez dentro crearemos el usuario
 
         #cliente    server  secret          IP addresses
         brangy      prueba  123456          *
     
     Guardamos 
 
-- Paso 6 
+- Paso 6
 
-    Verificamos el estado del servicio pptpd
+    A continuacion configuraremos **iptables** para redirigir el tráfico de todos los paquetes a través de la VPN.
 
-        service pptpd status
+        iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o enp0s3 -j MASQUERADE
 
-    En el caso de que este inactivo se reunicia el servidor con el siguiente comando
+    En este momento crearemos el fichero rc.local dentro del directorio etc y añadiremos las líneas corespondientes para que el comando que acabamos de ejecutar, el de iptables, se ejecute cada vez que iniciamos o reiniciamos nuestro servidor.
 
-        sudo /etc/init.d/ pptpd restart
+        nano /etc/rc.local  
 
-    Y verificamos de nuevo si el servicio esta activo 
+        iptables -t nat -A POSTROUTING -s 10.10.10.0/24 -o enp0s3 -j MASQUERADE
 
-        service pptpd status
+        chmod +x /etc/rc.local  
 
 - Paso 7 
 
@@ -91,6 +90,20 @@ Para configuara un VPN en linux se debe seguir los siguientes pasos:
         net.ipv4.ip_forward=1
     
     Guardamos los cambios
+
+- Paso 8 
+
+    Verificamos el estado del servicio pptpd
+
+        service pptpd status
+
+    En el caso de que este inactivo se reunicia el servidor con el siguiente comando
+
+        sudo /etc/init.d/ pptpd restart
+
+    Y verificamos de nuevo si el servicio esta activo 
+
+        service pptpd status
 
 ## LISTO
 
