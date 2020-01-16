@@ -81,11 +81,11 @@ Para configuarar un VPN en linux se debe seguir los siguientes pasos:
 
 - Paso 7 
 
-    La ultima configuracion sera habilitar las tablas para que tengan acceso a internet
+    La ultima configuración sera habilitar las tablas para que tengan acceso a internet
 
         nano /etc/sysctl.conf
 
-    Descomentamos la siguiente linea
+    Descomentamo la siguiente linea
 
         net.ipv4.ip_forward=1
     
@@ -97,11 +97,11 @@ Para configuarar un VPN en linux se debe seguir los siguientes pasos:
 
         service pptpd status
 
-    En el caso de que este inactivo se reunicia el servidor con el siguiente comando
+    En el caso de que este inactivo se reinicia el servidor con el siguiente comando
 
-        sudo /etc/init.d/ pptpd restart
+        sudo service pptpd restart
 
-    Y verificamos de nuevo si el servicio esta activo 
+    Y verificamos de nuevo si el servicio está activo 
 
         service pptpd status
 
