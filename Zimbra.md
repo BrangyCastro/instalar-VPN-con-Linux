@@ -152,3 +152,7 @@ Cuando hayas terminado con las pruebas de Zimbra y quieras desinstalarlo del sis
     cd /root/zimbra/zcs-8.8.10_GA_3039.RHEL7_64.20180928094617
     
     ./install.sh -u
+
+
+Fuentes:
+[Aldealinux](https://aldealinux.com/como-instalar-el-servidor-de-correo-zimbra-de-codigo-abierto-zcs-8-8-10-en-centos-7/)
